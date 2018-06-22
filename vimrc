@@ -1,4 +1,24 @@
-set fo+=r
+set nu
+syn on
+ 
+set shiftwidth=8
+set tabstop=8
+set autoindent
+" Replace tabs with spaces
+"set expandtab
+ 
+set statusline+=%F
+set statusline+=\
+set statusline+=%l[%L]/%v
+set laststatus=2
+
+highlight OverLength ctermbg=white ctermfg=black guibg=#592929
+match OverLength /\%81v.\+/
+set colorcolumn=81
+highlight ColorColumn ctermbg=white
+
+set fo=croq
 ab com /*<CR>/<Up>
-iab main int main (int argc, char **argv)<CR>{<CR>return 0;<CR>}<UP><Tab>
 colorscheme desert
+
+
