@@ -21,4 +21,4 @@ set fo=croq
 ab com /*<CR>/<Up>
 colorscheme desert
 
-
+set pastetoggle=<F2>
