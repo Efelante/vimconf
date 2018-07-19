@@ -22,3 +22,6 @@ ab com /*<CR>/<Up>
 colorscheme desert
 
 set pastetoggle=<F2>
+
+set undofile " Keep undo history between sessions
+set undodir=~/.vim/undodir " Don't forget to create this directory
