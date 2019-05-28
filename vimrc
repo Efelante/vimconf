@@ -26,6 +26,8 @@ set pastetoggle=<F2>
 set undofile " Keep undo history between sessions
 set undodir=~/.vim/undodir " Don't forget to create this directory
 
+set listchars=tab:>-
+
 " Mappings
 
 " Delete preprocessor directives that are used to comment a block of code
@@ -38,3 +40,9 @@ nmap <F2> %dd<C-O>dd
 
 nmap <F3> d%
 
+" Enable/disable whitespace characters visibility
+
+nmap <F5> :set list!<CR>
+noremap <F5>:set list!<CR>
+inoremap <F5> <C-o>:set list!<CR>
+cnoremap <F5> <C-c>:set list!<CR>
