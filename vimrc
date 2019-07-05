@@ -51,4 +51,5 @@ cnoremap <F5> <C-c>:set list!<CR>
 call plug#begin('~/.vim/plugged')
 	Plug 'vim-airline/vim-airline'
 	Plug 'scrooloose/nerdtree'
+	Plug 'tpope/vim-fugitive'
 call plug#end()
