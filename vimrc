@@ -46,3 +46,9 @@ nmap <F5> :set list!<CR>
 noremap <F5>:set list!<CR>
 inoremap <F5> <C-o>:set list!<CR>
 cnoremap <F5> <C-c>:set list!<CR>
+
+" Plugin section
+call plug#begin('~/.vim/plugged')
+	Plug 'vim-airline/vim-airline'
+	Plug 'scrooloose/nerdtree'
+call plug#end()
