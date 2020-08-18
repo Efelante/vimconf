@@ -52,6 +52,10 @@ set iminsert=0
 set imsearch=0
 highlight lCursor guifg=NONE guibg=Cyan
 
+" Cscope settings
+" Use cstag (fix Ctrl+} error (tag not found))
+set cscopetag
+
 " vim-plug (plugin manager) autoinstall 
 if empty(glob('~/.vim/autoload/plug.vim'))
 	silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
