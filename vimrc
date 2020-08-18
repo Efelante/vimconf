@@ -52,9 +52,6 @@ set iminsert=0
 set imsearch=0
 highlight lCursor guifg=NONE guibg=Cyan
 
-" Set hotkey for the NERDTree to open and close
-map <F2> :NERDTreeToggle<CR>
-
 " vim-plug (plugin manager) autoinstall 
 if empty(glob('~/.vim/autoload/plug.vim'))
 	silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -68,3 +65,5 @@ call plug#begin('~/.vim/plugged')
 	Plug 'tpope/vim-fugitive'
 call plug#end()
 
+" Set hotkey for the NERDTree to open and close
+map <F2> :NERDTreeToggle<CR>
