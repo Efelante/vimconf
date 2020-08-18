@@ -55,6 +55,12 @@ highlight lCursor guifg=NONE guibg=Cyan
 " Set hotkey for the NERDTree to open and close
 map <F2> :NERDTreeToggle<CR>
 
+" vim-plug (plugin manager) autoinstall 
+if empty(glob('~/.vim/autoload/plug.vim'))
+	silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+	autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
 " Plugin section
 call plug#begin('~/.vim/plugged')
 	Plug 'vim-airline/vim-airline'
