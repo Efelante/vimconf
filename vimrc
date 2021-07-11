@@ -1,8 +1,8 @@
 set nu
 syn on
  
-set shiftwidth=8
-set tabstop=8
+set shiftwidth=4
+set tabstop=4
 set autoindent
 " Replace tabs with spaces
 "set expandtab
@@ -72,3 +72,12 @@ call plug#end()
 
 " Set hotkey for the NERDTree to open and close
 map <F2> :NERDTreeToggle<CR>
+
+function InsertLocalDefinitions()
+	let @a=''
+	g/\v^[a-z_\*]+ [a-zA-Z_0-9\(\, \*]*\)$/execute "normal A;\<Esc>\"Ayyx"
+	execute "normal " "\<c-o>"
+	execute "normal " "\"aP"
+endfunction
+
+command InsertLocalDefinitions :call InsertLocalDefinitions()
