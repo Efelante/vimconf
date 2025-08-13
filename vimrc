@@ -17,6 +17,9 @@ match OverLength /\%81v.\+/
 set colorcolumn=81
 highlight ColorColumn ctermbg=white
 
+" Set highlighting for the search results
+set hlsearch
+
 set fo=croq
 ab com /*<CR>/<Up>
 "colorscheme desert
@@ -27,6 +30,9 @@ set undofile " Keep undo history between sessions
 set undodir=~/.vim/undodir " Don't forget to create this directory
 
 set listchars=tab:>-
+
+set textwidth=80
+set backspace=2
 
 " Mappings
 
@@ -46,15 +52,34 @@ nmap <F5> :set list!<CR>
 noremap <F5>:set list!<CR>
 inoremap <F5> <C-o>:set list!<CR>
 cnoremap <F5> <C-c>:set list!<CR>
+
+" Set the Go to function definition hotkey
+nmap <F12> :tab cs find g <C-r><C-w> <CR>
+
+" Set the build hotkey
+nmap <F7> :make<C-r><C-w> <CR>
+
 " set langmap=ФИСВУАПРШОЛДЬТЩЗЙКЫЕГМЦЧНЯ;ABCDEFGHIJKLMNOPQRSTUVWXYZ,фисвуапршолдьтщзйкыегмцчня;abcdefghijklmnopqrstuvwxyz
 set keymap=russian-jcukenwin
 set iminsert=0
 set imsearch=0
 highlight lCursor guifg=NONE guibg=Cyan
+inoremap <C-k> <C-^>
+
+nmap <C-s> O@step 
+
+" if system('uname -r') =~ "microsoft"
+" 	augroup Yank
+" 		autocmd!
+" 		autocmd TextYankPost * :call system('/mnt/c/windows/system32/clip.exe ',@")
+" 	augroup END
+" endif
+
 
 " Cscope settings
 " Use cstag (fix Ctrl+} error (tag not found))
 set cscopetag
+cs add cscope.out
 
 " Enable search results highlighting
 set hlsearch
@@ -76,6 +101,7 @@ call plug#end()
 " Set hotkey for the NERDTree to open and close
 map <F2> :NERDTreeToggle<CR>
 
+" Open NERDTree in a right pane
 let g:NERDTreeWinPos = "right"
 
 " In normal press Shift + a (A)
@@ -92,14 +118,42 @@ endfunction
 
 function ShowLocalDefinitions()
 	let @a=''
+	" Pattern to find function definitions (including newlines) and copy to a register
 	%s/\v^[a-zA-Z0-9_\*]+ [a-zA-Z_0-9\(\, \*\r\n]*\)$/\=setreg('A', submatch(0) . "\n")/n
 	copen
 	set ma
 	execute "normal " "\"aP"
 endfunction
-" Pattern to find function definitions (including newlines) and copy to a register
-" let @a=''
-"%s/\v^[a-zA-Z0-9_\*]+ [a-zA-Z_0-9\(\, \*\r\n]*\)$/\=setreg('A', submatch(0) . "\n")/n
+
+function ExpandLine(lensize)
+	let line = getline('.')
+	let tabsize = &tabstop
+	"let lensize = strlen(line)
+	let sizereq = a:lensize
+	if (a:lensize % tabsize)
+		let sizereq = a:lensize + (tabsize - a:lensize % tabsize)
+	endif
+	let tabscount = (sizereq - strlen(line)) / tabsize
+	if (((sizereq - strlen(line)) % tabsize) > 0)
+		let tabscount = tabscount + 1
+	endif 
+	for i in range (0,tabscount - 1)
+		let line = line . "\t"
+	endfor
+	let line = line . '|'
+	call setline('.', line)
+	" let @a=''
+	" g/\v^[a-z_\*]+ [a-zA-Z_0-9\(\, \*]*\)$/execute "normal A;\<Esc>\"Ayyx"
+	" execute "normal " "\<c-o>"
+	" execute "normal " "\"aP"
+endfunction
 
 command InsertLocalDefinitions :call InsertLocalDefinitions()
 command ShowLocalDefinitions :call ShowLocalDefinitions()
+
+" Clang-format integration
+function! FormatOnSave()
+  let l:formatdiff = 1
+  py3f /usr/share/clang/clang-format-18/clang-format.py
+endfunction
+autocmd BufWritePre *.h,*.c,*.hpp,*.cc,*.cpp call FormatOnSave()
