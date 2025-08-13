@@ -19,7 +19,7 @@ highlight ColorColumn ctermbg=white
 
 set fo=croq
 ab com /*<CR>/<Up>
-colorscheme desert
+"colorscheme desert
 
 set pastetoggle=<F2>
 
@@ -56,6 +56,9 @@ highlight lCursor guifg=NONE guibg=Cyan
 " Use cstag (fix Ctrl+} error (tag not found))
 set cscopetag
 
+" Enable search results highlighting
+set hlsearch
+
 " vim-plug (plugin manager) autoinstall 
 if empty(glob('~/.vim/autoload/plug.vim'))
 	echo "Empty"
@@ -73,11 +76,30 @@ call plug#end()
 " Set hotkey for the NERDTree to open and close
 map <F2> :NERDTreeToggle<CR>
 
+let g:NERDTreeWinPos = "right"
+
+" In normal press Shift + a (A)
+" insert ;
+" Esc
+" "Ayy - append to a register
+" x - delete ;
 function InsertLocalDefinitions()
 	let @a=''
-	g/\v^[a-z_\*]+ [a-zA-Z_0-9\(\, \*]*\)$/execute "normal A;\<Esc>\"Ayyx"
+	g/\v^[a-zA-Z0-9_\*]+ [a-zA-Z_0-9\(\, \*\r\n]*\)$/execute "normal A;\<Esc>\"Ayyx"
 	execute "normal " "\<c-o>"
 	execute "normal " "\"aP"
 endfunction
 
+function ShowLocalDefinitions()
+	let @a=''
+	%s/\v^[a-zA-Z0-9_\*]+ [a-zA-Z_0-9\(\, \*\r\n]*\)$/\=setreg('A', submatch(0) . "\n")/n
+	copen
+	set ma
+	execute "normal " "\"aP"
+endfunction
+" Pattern to find function definitions (including newlines) and copy to a register
+" let @a=''
+"%s/\v^[a-zA-Z0-9_\*]+ [a-zA-Z_0-9\(\, \*\r\n]*\)$/\=setreg('A', submatch(0) . "\n")/n
+
 command InsertLocalDefinitions :call InsertLocalDefinitions()
+command ShowLocalDefinitions :call ShowLocalDefinitions()
