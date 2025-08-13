@@ -64,6 +64,9 @@ set keymap=russian-jcukenwin
 set iminsert=0
 set imsearch=0
 highlight lCursor guifg=NONE guibg=Cyan
+inoremap <C-k> <C-^>
+
+nmap <C-s> O@step 
 
 " if system('uname -r') =~ "microsoft"
 " 	augroup Yank
@@ -130,3 +133,10 @@ function ExpandLine(lensize)
 endfunction
 
 command InsertLocalDefinitions :call InsertLocalDefinitions()
+
+" Clang-format integration
+function! FormatOnSave()
+  let l:formatdiff = 1
+  py3f /usr/share/clang/clang-format-18/clang-format.py
+endfunction
+autocmd BufWritePre *.h,*.c,*.hpp,*.cc,*.cpp call FormatOnSave()
